@@ -1,18 +1,17 @@
-[gd_scene load_steps=27 format=3 uid="uid://bw86fsv6rvi5h"]
+[gd_scene load_steps=30 format=3 uid="uid://bw86fsv6rvi5h"]
 
 [ext_resource type="Script" uid="uid://quf1o7ujen25" path="res://scripts/common_techniques.gd" id="1_0ugy3"]
 [ext_resource type="Texture2D" uid="uid://dw27ks2iy6r18" path="res://assets/other/Terrain (16x16).png" id="2_4ntks"]
 [ext_resource type="PackedScene" uid="uid://cf8ow35myt7tq" path="res://scenes/player.tscn" id="2_ttseq"]
-[ext_resource type="Shader" uid="uid://7oc07r6m6dkt" path="res://shaders/scrolling_background.gdshader" id="4_xth1f"]
+[ext_resource type="Shader" uid="uid://7oc07r6m6dkt" path="res://shaders/2d_shaders/scrolling_background.gdshader" id="4_xth1f"]
 [ext_resource type="Texture2D" uid="uid://dkkp8uv3w4c1g" path="res://assets/background/Blue.png" id="5_xth1f"]
-[ext_resource type="Shader" uid="uid://b4qb2fhgmudbx" path="res://shaders/grayscale.gdshader" id="6_kak6i"]
+[ext_resource type="Shader" uid="uid://b4qb2fhgmudbx" path="res://shaders/2d_shaders/grayscale.gdshader" id="6_kak6i"]
 [ext_resource type="Texture2D" uid="uid://b4cgytxlrs4ak" path="res://assets/other/End.png" id="6_mfsxn"]
-[ext_resource type="Shader" uid="uid://berkxcuu74fhb" path="res://shaders/gradient.gdshader" id="8_jqsh0"]
-[ext_resource type="Shader" uid="uid://d7nwbranh4m2" path="res://shaders/screen_grayscale.gdshader" id="9_pqqsy"]
+[ext_resource type="Shader" uid="uid://berkxcuu74fhb" path="res://shaders/2d_shaders/gradient.gdshader" id="8_jqsh0"]
+[ext_resource type="Shader" uid="uid://d7nwbranh4m2" path="res://shaders/2d_shaders/screen_grayscale.gdshader" id="9_pqqsy"]
 [ext_resource type="Texture2D" uid="uid://ch000ep2q7qq2" path="res://icon.svg" id="10_ty7i1"]
+[ext_resource type="Shader" uid="uid://cqs4esqvy5hm1" path="res://shaders/2d_shaders/distortion.gdshader" id="11_hyy88"]
 [ext_resource type="Texture2D" uid="uid://jgyxm4826yuh" path="res://assets/other/Rock Head.png" id="11_luoof"]
-[ext_resource type="Shader" uid="uid://b2ja3s2n00ea6" path="res://shaders/masking.gdshader" id="11_ux0nb"]
-[ext_resource type="Texture2D" uid="uid://cv2tiwe2wabu" path="res://assets/masks/circle_mask2.png" id="12_432xp"]
 [ext_resource type="Texture2D" uid="uid://daw35yrqwa2a5" path="res://assets/other/Spike Head.png" id="13_hyy88"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_sehxt"]
@@ -202,9 +201,30 @@ shader_parameter/gradient_texture = SubResource("GradientTexture2D_jqsh0")
 shader = ExtResource("9_pqqsy")
 shader_parameter/enabled = true
 
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_hyy88"]
+seed = 15
+frequency = 0.005
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_432xp"]
+seamless = true
+noise = SubResource("FastNoiseLite_hyy88")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_432xp"]
+seed = 155
+frequency = 0.005
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_hyy88"]
+seamless = true
+noise = SubResource("FastNoiseLite_432xp")
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_hyy88"]
-shader = ExtResource("11_ux0nb")
-shader_parameter/mask_texture = ExtResource("12_432xp")
+shader = ExtResource("11_hyy88")
+shader_parameter/distortion_multiplier = 0.02
+shader_parameter/distortion_tint = Color(0.315, 0.605, 0.847, 1)
+shader_parameter/noise_texture_0 = SubResource("NoiseTexture2D_432xp")
+shader_parameter/noise_texture_1 = SubResource("NoiseTexture2D_hyy88")
+shader_parameter/offset_0 = Vector2(0.05, 0)
+shader_parameter/offset_1 = Vector2(0.05, 0)
 
 [sub_resource type="Animation" id="Animation_hyy88"]
 length = 0.001
@@ -256,7 +276,6 @@ layer_0/tile_data = PackedInt32Array(655361, 458752, 4, 655362, 458752, 4, 65536
 layer = -100
 
 [node name="ScrollingBackground" type="Sprite2D" parent="CanvasLayer"]
-visible = false
 texture_filter = 1
 texture_repeat = 2
 material = SubResource("ShaderMaterial_mfsxn")
@@ -289,16 +308,26 @@ texture = ExtResource("10_ty7i1")
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 
 [node name="Dissolve" type="Sprite2D" parent="."]
+visible = false
 material = SubResource("ShaderMaterial_hyy88")
 position = Vector2(1499, 402)
 scale = Vector2(3, 3)
 texture = ExtResource("11_luoof")
 
 [node name="Masking" type="Sprite2D" parent="."]
+visible = false
 material = SubResource("ShaderMaterial_hyy88")
 position = Vector2(1499, 402)
 scale = Vector2(3, 3)
 texture = ExtResource("13_hyy88")
+
+[node name="Distortion" type="Sprite2D" parent="."]
+z_index = 999
+texture_repeat = 2
+material = SubResource("ShaderMaterial_hyy88")
+position = Vector2(933.5, 529.5)
+scale = Vector2(1.91406, 0.773438)
+texture = ExtResource("10_ty7i1")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://bw86fsv6rvi5h"]
+[gd_scene load_steps=27 format=3 uid="uid://bw86fsv6rvi5h"]
 
 [ext_resource type="Script" uid="uid://quf1o7ujen25" path="res://scripts/common_techniques.gd" id="1_0ugy3"]
 [ext_resource type="Texture2D" uid="uid://dw27ks2iy6r18" path="res://assets/other/Terrain (16x16).png" id="2_4ntks"]
@@ -11,7 +11,9 @@
 [ext_resource type="Shader" uid="uid://d7nwbranh4m2" path="res://shaders/screen_grayscale.gdshader" id="9_pqqsy"]
 [ext_resource type="Texture2D" uid="uid://ch000ep2q7qq2" path="res://icon.svg" id="10_ty7i1"]
 [ext_resource type="Texture2D" uid="uid://jgyxm4826yuh" path="res://assets/other/Rock Head.png" id="11_luoof"]
-[ext_resource type="Shader" uid="uid://c3tb1e40c81yj" path="res://shaders/dissolve_shader.gdshader" id="11_ux0nb"]
+[ext_resource type="Shader" uid="uid://b2ja3s2n00ea6" path="res://shaders/masking.gdshader" id="11_ux0nb"]
+[ext_resource type="Texture2D" uid="uid://cv2tiwe2wabu" path="res://assets/masks/circle_mask2.png" id="12_432xp"]
+[ext_resource type="Texture2D" uid="uid://daw35yrqwa2a5" path="res://assets/other/Spike Head.png" id="13_hyy88"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_sehxt"]
 texture = ExtResource("2_4ntks")
@@ -200,31 +202,9 @@ shader_parameter/gradient_texture = SubResource("GradientTexture2D_jqsh0")
 shader = ExtResource("9_pqqsy")
 shader_parameter/enabled = true
 
-[sub_resource type="Gradient" id="Gradient_ux0nb"]
-offsets = PackedFloat32Array(0.15, 0.35, 0.6, 0.8, 1)
-colors = PackedColorArray(1, 0.9, 0.25, 1, 1, 0.368627, 0, 1, 1, 0.166667, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_hyy88"]
-gradient = SubResource("Gradient_ux0nb")
-width = 42
-height = 42
-
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_ux0nb"]
-frequency = 0.05
-
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_hyy88"]
-width = 42
-height = 42
-noise = SubResource("FastNoiseLite_ux0nb")
-
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_hyy88"]
 shader = ExtResource("11_ux0nb")
-shader_parameter/noise_texture = SubResource("NoiseTexture2D_hyy88")
-shader_parameter/dissolve_gradient = SubResource("GradientTexture2D_hyy88")
-shader_parameter/dissolve_color_thickness = 0.25
-shader_parameter/min_progress_opacity = 0.2
-shader_parameter/fade_progress_begin = 0.85
-shader_parameter/progress = 0.0
+shader_parameter/mask_texture = ExtResource("12_432xp")
 
 [sub_resource type="Animation" id="Animation_hyy88"]
 length = 0.001
@@ -313,6 +293,12 @@ material = SubResource("ShaderMaterial_hyy88")
 position = Vector2(1499, 402)
 scale = Vector2(3, 3)
 texture = ExtResource("11_luoof")
+
+[node name="Masking" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_hyy88")
+position = Vector2(1499, 402)
+scale = Vector2(3, 3)
+texture = ExtResource("13_hyy88")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

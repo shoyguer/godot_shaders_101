@@ -1,0 +1,11 @@
+[gd_resource type="ShaderMaterial" load_steps=3 format=3 uid="uid://cc6s3i7m3fml2"]
+
+[ext_resource type="Shader" uid="uid://dwhnyhtgtsrj0" path="res://shaders/3d_shaders/noise_texture.gdshader" id="1_35spi"]
+[ext_resource type="Texture2D" uid="uid://ch000ep2q7qq2" path="res://icon.svg" id="2_tht6f"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_35spi")
+shader_parameter/albedo_texture = ExtResource("2_tht6f")
+shader_parameter/offset = Vector2(1, 0)
+shader_parameter/tiling_amount = 5.0

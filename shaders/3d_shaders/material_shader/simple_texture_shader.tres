@@ -1,0 +1,8 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://cd30f512dwysg"]
+
+[ext_resource type="Shader" uid="uid://biq0cv7hc3hpa" path="res://shaders/3d_shaders/spatial_shader.gdshader" id="1_cpvgr"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_cpvgr")
+shader_parameter/color = Color(0, 0, 0, 1)

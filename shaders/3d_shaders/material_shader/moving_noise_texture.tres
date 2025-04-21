@@ -1,0 +1,11 @@
+[gd_resource type="ShaderMaterial" load_steps=3 format=3 uid="uid://b6a72lm2rveqa"]
+
+[ext_resource type="Shader" uid="uid://c6u2ykil32nuu" path="res://shaders/3d_shaders/moving_noise_texture.gdshader" id="1_snxqv"]
+[ext_resource type="Texture2D" uid="uid://ch000ep2q7qq2" path="res://icon.svg" id="2_hklcg"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_snxqv")
+shader_parameter/albedo_texture = ExtResource("2_hklcg")
+shader_parameter/offset = Vector2(1, 0)
+shader_parameter/tiling_amount = 10.0

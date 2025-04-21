@@ -1,0 +1,39 @@
+[gd_scene load_steps=12 format=3 uid="uid://svdhqhb7y0p"]
+
+[ext_resource type="Script" uid="uid://dygwe5eri2w33" path="res://scripts/spatial_shaders.gd" id="1_db346"]
+[ext_resource type="PackedScene" path="res://scenes/camera_controller.tscn" id="1_p4cbf"]
+[ext_resource type="Material" uid="uid://b6a72lm2rveqa" path="res://shaders/3d_shaders/material_shader/moving_noise_texture.tres" id="3_2nhy8"]
+[ext_resource type="Material" uid="uid://cd30f512dwysg" path="res://shaders/3d_shaders/material_shader/simple_texture_shader.tres" id="3_3ay5j"]
+[ext_resource type="Material" uid="uid://cc6s3i7m3fml2" path="res://scenes/wave_movement_texture.tres" id="3_lcdmc"]
+[ext_resource type="Script" uid="uid://cllcwfdnxerbh" path="res://scenes/sphere.gd" id="4_3ay5j"]
+[ext_resource type="Material" uid="uid://4qb4gujn0k28" path="res://shaders/3d_shaders/pbr.tres" id="7_324du"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_7jfiy"]
+
+[sub_resource type="Sky" id="Sky_joj37"]
+sky_material = SubResource("ProceduralSkyMaterial_7jfiy")
+
+[sub_resource type="Environment" id="Environment_b0d0y"]
+background_mode = 2
+sky = SubResource("Sky_joj37")
+
+[sub_resource type="SphereMesh" id="SphereMesh_lcdmc"]
+material = ExtResource("7_324du")
+
+[node name="SpatialShaders" type="Node3D"]
+script = ExtResource("1_db346")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_b0d0y")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.80536, 0.463107, -0.370038, 0, 0.624234, 0.781237, 0.592787, -0.629177, 0.502733, 0, 3.69932, 0)
+
+[node name="CameraController" parent="." instance=ExtResource("1_p4cbf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2.85299)
+
+[node name="Sphere" type="MeshInstance3D" parent="."]
+mesh = SubResource("SphereMesh_lcdmc")
+script = ExtResource("4_3ay5j")
+shaders = Array[ShaderMaterial]([ExtResource("3_3ay5j"), ExtResource("3_lcdmc"), ExtResource("3_2nhy8"), ExtResource("7_324du")])
+shader = 3

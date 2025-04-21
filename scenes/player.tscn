@@ -11,7 +11,7 @@
 shader = ExtResource("2_tuyoq")
 shader_parameter/color_overlay = Color(1, 1, 1, 1)
 shader_parameter/color_opacity = 0.0
-shader_parameter/enabled = false
+shader_parameter/enabled = true
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_3kfll"]
 atlas = ExtResource("2_lbaly")
@@ -211,7 +211,7 @@ length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("AnimatedSprite2D:material:shader_parameter/flash_opacity")
+tracks/0/path = NodePath("AnimatedSprite2D:material:shader_parameter/color_opacity")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -227,11 +227,11 @@ length = 0.4
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("AnimatedSprite2D:material:shader_parameter/flash_opacity")
+tracks/0/path = NodePath("AnimatedSprite2D:material:shader_parameter/color_opacity")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4),
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.300402, 0.4),
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1),
 "update": 0,
 "values": [0.0, 1.0, 0.0, 1.0, 0.0]

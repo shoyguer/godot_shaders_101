@@ -25,7 +25,7 @@ void fragment() {
 		vec4 final_color = mix(original_color, vec4(color_overlay, original_color.a), color_opacity);
 		// If the original texture has transparency, the final color will inherit the transparency.
 		final_color.a = original_color.a;
-		
+
 		COLOR = final_color;
 	}
 }

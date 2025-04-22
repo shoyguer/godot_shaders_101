@@ -1,0 +1,7 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://65cjehx2fm6k"]
+
+[ext_resource type="Shader" uid="uid://chscbjqakq18w" path="res://shaders/3d_shaders/vertices_3d.gdshader" id="1_ccso0"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_ccso0")

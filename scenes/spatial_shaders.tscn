@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://svdhqhb7y0p"]
+[gd_scene load_steps=23 format=3 uid="uid://svdhqhb7y0p"]
 
 [ext_resource type="Script" uid="uid://dygwe5eri2w33" path="res://scripts/spatial_shaders.gd" id="1_db346"]
 [ext_resource type="PackedScene" path="res://scenes/camera_controller.tscn" id="1_p4cbf"]
@@ -6,7 +6,11 @@
 [ext_resource type="Material" uid="uid://cd30f512dwysg" path="res://shaders/3d_shaders/material_shader/simple_texture_shader.tres" id="3_3ay5j"]
 [ext_resource type="Material" uid="uid://cc6s3i7m3fml2" path="res://scenes/wave_movement_texture.tres" id="3_lcdmc"]
 [ext_resource type="Script" uid="uid://cllcwfdnxerbh" path="res://scenes/sphere.gd" id="4_3ay5j"]
-[ext_resource type="Material" uid="uid://4qb4gujn0k28" path="res://shaders/3d_shaders/pbr.tres" id="7_324du"]
+[ext_resource type="Texture2D" uid="uid://ch000ep2q7qq2" path="res://icon.svg" id="4_xpqp4"]
+[ext_resource type="Material" uid="uid://4qb4gujn0k28" path="res://shaders/3d_shaders/material_shader/pbr.tres" id="7_324du"]
+[ext_resource type="Shader" uid="uid://blf4i8i4lnjjv" path="res://shaders/3d_shaders/render_modes.gdshader" id="8_pmqqv"]
+[ext_resource type="Material" uid="uid://65cjehx2fm6k" path="res://shaders/3d_shaders/material_shader/vertices_3d.tres" id="10_wl0v6"]
+[ext_resource type="Shader" uid="uid://csnotrwkp3nrg" path="res://shaders/3d_shaders/water.gdshader" id="11_plbai"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_7jfiy"]
 
@@ -18,7 +22,61 @@ background_mode = 2
 sky = SubResource("Sky_joj37")
 
 [sub_resource type="SphereMesh" id="SphereMesh_lcdmc"]
-material = ExtResource("7_324du")
+material = ExtResource("10_wl0v6")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_xpqp4"]
+render_priority = 0
+shader = ExtResource("8_pmqqv")
+shader_parameter/albedo = ExtResource("4_xpqp4")
+shader_parameter/metallic = 0.74
+shader_parameter/roughtness = 0.18
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_wl0v6"]
+size = Vector2(32, 32)
+subdivide_width = 32
+subdivide_depth = 32
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_rf5sy"]
+noise_type = 2
+seed = 20
+frequency = 0.0057
+fractal_type = 2
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_plbai"]
+width = 1024
+height = 1024
+seamless = true
+as_normal_map = true
+bump_strength = 15.0
+noise = SubResource("FastNoiseLite_rf5sy")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_1ott2"]
+noise_type = 2
+seed = 5
+frequency = 0.0082
+fractal_type = 2
+fractal_weighted_strength = 0.5
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_o8cqm"]
+width = 1024
+height = 1024
+seamless = true
+as_normal_map = true
+bump_strength = 15.0
+noise = SubResource("FastNoiseLite_1ott2")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_1ott2"]
+render_priority = 0
+shader = ExtResource("11_plbai")
+shader_parameter/water_tint = Color(0.17, 0.401, 0.5, 1)
+shader_parameter/metallic = 0.0
+shader_parameter/roughness = 0.02
+shader_parameter/normal_map_texture_0 = SubResource("NoiseTexture2D_plbai")
+shader_parameter/normal_map_texture_1 = SubResource("NoiseTexture2D_o8cqm")
+shader_parameter/offset_0 = Vector2(0.02, 0.02)
+shader_parameter/offset_1 = Vector2(-0.02, -0.02)
+shader_parameter/time_multiplier_0 = 1.0
+shader_parameter/time_multiplier_1 = 1.0
 
 [node name="SpatialShaders" type="Node3D"]
 script = ExtResource("1_db346")
@@ -30,10 +88,15 @@ environment = SubResource("Environment_b0d0y")
 transform = Transform3D(0.80536, 0.463107, -0.370038, 0, 0.624234, 0.781237, 0.592787, -0.629177, 0.502733, 0, 3.69932, 0)
 
 [node name="CameraController" parent="." instance=ExtResource("1_p4cbf")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2.85299)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.23967, 3.74739)
 
 [node name="Sphere" type="MeshInstance3D" parent="."]
+visible = false
 mesh = SubResource("SphereMesh_lcdmc")
 script = ExtResource("4_3ay5j")
-shaders = Array[ShaderMaterial]([ExtResource("3_3ay5j"), ExtResource("3_lcdmc"), ExtResource("3_2nhy8"), ExtResource("7_324du")])
-shader = 3
+shaders = Array[ShaderMaterial]([ExtResource("3_3ay5j"), ExtResource("3_lcdmc"), ExtResource("3_2nhy8"), ExtResource("7_324du"), SubResource("ShaderMaterial_xpqp4"), ExtResource("10_wl0v6")])
+shader = 5
+
+[node name="Water" type="MeshInstance3D" parent="."]
+mesh = SubResource("PlaneMesh_wl0v6")
+surface_material_override/0 = SubResource("ShaderMaterial_1ott2")
